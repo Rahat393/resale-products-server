@@ -19,6 +19,7 @@ async function run() {
     try {
         const servicesCollection = client.db('productsResale').collection('sevices')
         const bookingsCollection = client.db('productsResale').collection('bookings')
+        const usersCollection = client.db('productsResale').collection('users')
 
         app.get('/services', async (req, res) => {
             const query = {};
@@ -36,6 +37,27 @@ async function run() {
         app.post('/bookings', async (req, res) => {
             const booking = req.body;
             const result = await bookingsCollection.insertOne(booking);
+            res.send(result);
+        });
+
+        app.get('/bookings', async (req, res) => {
+            const email = req.query.email;
+
+            // const decodedEmail = req.decoded.email;
+
+            // if (email !== decodedEmail) {
+            //     return res.status(403).send({ message: 'forbidden access' });
+            // }
+
+            const query = { email: email };
+            const bookings = await bookingsCollection.find(query).toArray();
+            res.send(bookings);
+        })
+
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            console.log(user);
+            const result = await usersCollection.insertOne(user);
             res.send(result);
         });
     }
