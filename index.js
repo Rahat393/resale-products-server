@@ -122,11 +122,25 @@ async function run() {
             res.send(users)
         })
 
+        app.delete('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const result = await usersCollection.deleteOne(filter);
+            res.send(result);
+        })
+
         app.get('/sellers', async (req, res) => {
             const query = {};
             const users = await usersCollection.find({ role: "seller" }).toArray();
-            // const users = await usersCollection.find({ role: req.query.role }).toArray();
+            /// const users = await usersCollection.find({ role: req.query.role }).toArray();
             res.send(users)
+        })
+
+        app.delete('/sellers/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const result = await usersCollection.deleteOne(filter);
+            res.send(result);
         })
 
         app.get('/jwt', async (req, res) => {
